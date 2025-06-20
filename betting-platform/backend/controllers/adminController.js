@@ -15,7 +15,7 @@ exports.setDailyLine = async (req, res) => {
   }
 
   try {
-    const dateKey = cutoff_time.slice(0, 10); // YYYY-MM-DD
+    const dateKey = cutoff_time.slice(0, 10); 
     const line = await DailyLine.findOneAndUpdate(
       { _id: dateKey },
       {
