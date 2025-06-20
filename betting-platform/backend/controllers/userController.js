@@ -6,17 +6,16 @@ const Withdrawal = require('../models/Withdrawal');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret"; // 🔐 store this in .env
+const JWT_SECRET = process.env.JWT_SECRET || "supersecret"; 
 
 function isStrongPassword(password) {
   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
   return strongPasswordRegex.test(password);
 }
 
-// ⏱ For login endpoint (apply in router)
 exports.loginRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 min
-  max: 10, // limit to 10 requests per 15 min
+  windowMs: 15 * 60 * 1000, 
+  max: 10, 
   message: "Too many login attempts. Try again later.",
 });
 
@@ -33,15 +32,12 @@ exports.loginUser = async (req, res) => {
 
   try {
     let user = await User.findOne({ username });
-    //if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
     if (!user) {
-      // Register new user with hashed password
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
       user = await User.create({ username, password: hashedPassword });
       console.log(`🆕 New user created: ${username}`);
     } else {
-      // Compare entered password with stored hash
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         return res.status(401).json({ error: 'Invalid password' });

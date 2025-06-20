@@ -37,9 +37,8 @@ exports.resolveBet = async (req, res) => {
     for (const bet of bets) {
       const user = await User.findOne({ username: bet.username });
       if (user) {
-        // user.balance += Math.round(bet.amount * multiplier);
-        const gain = +(bet.amount * multiplier).toFixed(5); // Ensures proper rounding and converts to number
-        user.balance = +(user.balance + gain).toFixed(5);   // Rounds final balance to 5 decimals
+        const gain = +(bet.amount * multiplier).toFixed(5); 
+        user.balance = +(user.balance + gain).toFixed(5);   
         console.log('betAmount: ', bet.amount);
         console.log('multiplier: ', multiplier);
         console.log('balance: ', user.balance);
