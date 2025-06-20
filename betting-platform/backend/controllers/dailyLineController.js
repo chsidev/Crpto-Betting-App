@@ -7,7 +7,7 @@ const Decimal = require("decimal.js");
 
 exports.getDailyLine = async (req, res) => {
   try {
-    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const today = new Date().toISOString().slice(0, 10); 
     const line = await DailyLine.findOne({ _id: today });
     if (!line) return res.status(404).json({ error: 'No line set for today' });
     res.json(line);
