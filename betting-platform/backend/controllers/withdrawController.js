@@ -28,7 +28,6 @@ exports.requestWithdrawal = async (req, res) => {
     const userBalance = new Decimal(user.balance);
     const dec_amount = new Decimal(amount);
     user.balance = userBalance.minus(dec_amount).toNumber();
-    //user.balance -= amount;
     await user.save();
 
     const request = await Withdrawal.create({
@@ -38,7 +37,6 @@ exports.requestWithdrawal = async (req, res) => {
       status: 'pending',
     });
     
-    // 🚀 Emit socket event
     req.app.get('io').emit('withdrawal:update');
 
     res.json({ message: 'Withdrawal request submitted', request, balance: user.balance });
